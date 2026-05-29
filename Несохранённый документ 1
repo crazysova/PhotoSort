@@ -1,0 +1,36 @@
+Если есть папки с названиями на кириллице и латинице то используй только латиницу, папкам с кириллицей присваивай похожие по написанию буквы латиницы.  Но используй только по 1 символу. Выведи полный код программы.
+
+def assign_keys(self):
+        """Привязывает клавиши к папкам по первой букве имени папки."""
+        key_map = {}
+        used_keys = set()
+
+        # Сопоставление кириллических букв с латинскими
+        kirillica_to_latin = {
+            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e',
+            'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k',
+            'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r',
+            'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts',
+            'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ъ': '', 'ы': 'y', 'ь': '',
+            'э': 'e', 'ю': 'yu', 'я': 'ya'
+        }
+
+        for folder in self.folders:
+            first_letter = folder[0].lower()  # Получаем первую букву папки
+
+            if 'а' <= first_letter <= 'я':  # Если первая буква кириллическая
+                latin_letter = kirillica_to_latin.get(first_letter, None)
+                if latin_letter:
+                    first_letter = latin_letter  # Заменяем на латинское соответствие
+
+            if first_letter not in used_keys:
+                key_map[first_letter] = folder  # Привязываем букву к папке
+                used_keys.add(first_letter)  # Помечаем букву как использованную
+            else:
+                # Если буква уже используется, ищем свободную букву
+                for letter in "abcdefghijklmnopqrstuvwxyz":
+                    if letter not in used_keys:
+                        key_map[letter] = folder  # Привязываем свободную букву к папке
+                        used_keys.add(letter)  # Помечаем букву как использованную
+                        break
+        return key_map
